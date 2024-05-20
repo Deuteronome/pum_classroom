@@ -1,0 +1,116 @@
+{% extends "base.html.twig" %}
+
+{% block javascripts %}
+   {{ parent() }}
+   <script src="{{ asset('avatarPreview.js')}}" defer></script>
+{% endblock %}
+
+{% block main %}
+    <main class="container-fluid p-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 p-5 box-custom">
+                <h2 class="title-custom my-4">Informations générales</h2>
+                {{ form_errors(form) }}
+                {{ form_start(form) }}      
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-8 pe-5">
+                        {{ form_row(form.firstname)}}
+                        {{ form_row(form.lastname)}}
+                        {{ form_row(form.pseudo)}}
+                        {{ form_row(form.modify)}}                                    
+                    
+                    </div>
+                    <div class="col-12 col-lg-4 ps-5 text-center">
+                        <img id="avatar-preview" src="/assets/images/avatar/{{ user.avatar }}" alt="avatar" class="img-fluid">  
+                        {{ form_row(form.avatar)}}
+                        {{ form_row(form.deleteAvatar)}}
+                    </div>
+                </div>
+                {{ form_end(form) }} 
+                <h2 class="title-custom my-4">Informations sécurisées</h2>
+                
+                    {% if (app.user.roles[0] == "ROLE_TEACHER" or app.user.roles[0] == "ROLE_ADMIN") %}
+                        {{ form_errors(groupForm) }}
+                        {{ form_start(groupForm) }}
+                        <div class="row align-items-center justify-content-between mb-3">
+                            <div class="col-8">
+                                {{ form_row(groupForm.studentGroup)}}
+                                {{ form_row(groupForm.deleteGroup)}}
+                               
+                            </div>
+                            <div class="col-4 text-end">{{ form_row(groupForm.modify)}}</div>
+                        </div>
+                        {{ form_end(groupForm) }}
+                    {% else %}
+                        <div class="row">
+                            <div class="col-6 h2 mb-3"> Groupe : <span class="bold">{{ user.studentGroup.groupName }}</span></div>
+                            <div class="col-6 h3 text-end">Seul un enseignant peut changer le groupe</div>
+                        </div>
+                    {% endif %}
+
+                    {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                        {% if user.id == app.user.id %}
+                            <div class="row">
+                                <div class="col-6 h2 mb-3"> 
+                                    Type de compte : <span class="bold">Administrateur</span></div>
+                                <div class="col-6 h3 text-end">Vous ne pouvez pas changer votre propre rôle</div>
+                            </div>
+                        {% else %}
+                            {{ form_errors(roleForm) }}
+                            {{ form_start(roleForm) }}
+                            <div class="row align-items-center justify-content-between mb-3">
+                                <div class="col-8">{{ form_row(roleForm.roles, {'value' : user.roles[0]})}}</div>
+                                <div class="col-4 text-end">{{ form_row(roleForm.modify)}}</div>
+                            </div>
+                            {{ form_end(roleForm) }}
+                        {% endif %}
+                        
+                    {% else %}
+                        <div class="row">
+                            <div class="col-6 h2 mb-3"> 
+                                Type de compte : <span class="bold">
+                                {% if user.roles[0] == 'ROLE_ADMIN' %}
+                                    Administrateur
+                                {% elseif user.roles[0] == 'ROLE_TEACHER' %}
+                                    Enseignant
+                                {% else %}
+                                    Apprenant
+                                {% endif %}
+                            </span></div>
+                            <div class="col-6 h3 text-end">Seul l'administrateur peut changer le rôle</div>
+                        </div>
+                    {% endif %}               
+                
+                <h2 class="title-custom my-4">Infomations sensibles</h2>
+                {% if user.id == app.user.id %}
+                    {{ form_errors(emailForm) }}
+                    {{ form_start(emailForm) }}
+                    <div class="row align-items-center justify-content-between mb-3">
+                        <div class="col-8">
+                            {{ form_row(emailForm.email)}}
+                            {{ form_row(emailForm.plainPassword, { 'value' : 'mauvaisMotDePasse'})}}
+                        </div>
+                        <div class="col-4 text-end">{{ form_row(emailForm.modify)}}</div>
+                    </div>
+                    {{ form_end(emailForm) }}
+
+                    {{ form_errors(passwordForm) }}
+                    {{ form_start(passwordForm) }}
+                    <div class="row align-items-center justify-content-between mb-3">
+                        <div class="col-8 h2 mb-3">
+                            Demander une modification de mot de passe
+                        </div>
+                        <div class="col-4 text-end">{{ form_row(passwordForm.send)}}</div>
+                    </div>
+                    {{ form_end(passwordForm) }}
+                {% else %}
+                    <div class="row align-items-center justify-content-between mb-3">
+                        <div class="col-6 h2 mb-3"> 
+                            Adresse mail: <span class="bold">{{ user.email}}</span></div>
+                        <div class="col-6 h3 text-end">Seul l'utilisateur peut changer son adresse mail</div>
+                    </div>
+                {% endif %} 
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,47 @@
+<header class="container-fluid p-0">
+    {% if app.user %}
+    <div class="avatar-box">
+        <img src="/assets/images/avatar/{{app.user.avatar}}" class="avatar" alt="avatar">
+    </div> 
+    {% endif %}    
+    
+    <div class="header-content row p-1 p-3">
+        
+        <div class="d-flex flex-column justify-content-center align-items-center header-title col-5 col-lg-8 p-5">
+            <h1>E2C Apprendre!</h1>
+            <h3>Plateforme d'évolution</h3>
+        </div>
+        
+        {% if app.user %}
+        <div class="user-info col-7 col-lg-4 p-1">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-7 p-4">
+                    <p class="user-text">Bonne session {{ app.user.getDisplayedName}}</p>
+                    {% if app.user.studentGroup %}
+                        <p  class="user-text">Groupe : {{ app.user.studentGroup.groupName}}</p>
+                    {% endif %}
+                    
+                </div>               
+            </div>
+        </div>
+        {% else %}
+        <div class="header-logo col-4"></div>
+        {% endif %}          
+        
+    </div>   
+
+    <div class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </div>
+
+    
+</header>

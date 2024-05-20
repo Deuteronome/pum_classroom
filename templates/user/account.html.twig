@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block main %}
+    <main class="container-fluid p-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 box-custom p-5">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-12 col-lg-4 text-center pt-5">
+                        <img src="/assets/images/avatar/{{ user.avatar }}" alt="" class="img-fluid account-avatar">
+                        <div class="h1 my-3">
+                            <span class="bold">{{(user.pseudo) ? user.pseudo : ''}}</span>                            
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-lg-6">
+                        <div class="h2 mb-3">
+                            Prénom : <span class="bold">{{ user.firstname }}</span>
+                        </div>
+                        <div class="h2 mb-3">
+                            Nom : <span class="bold">{{ user.lastname }}</span>
+                        </div>
+                        
+                        <div class="h2 mb-3">
+                            Adresse mail : <span class="bold">{{ user.email }}</span>
+                        </div>
+                        <div class="h2 mb-3">
+                            Type de compte : <span class="bold">
+                                {% if user.roles[0] == 'ROLE_ADMIN' %}
+                                    Administrateur
+                                {% elseif user.roles[0] == 'ROLE_TEACHER' %}
+                                    Enseignant
+                                {% else %}
+                                    Apprenant
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        {% if user.studentGroup %}
+                            <div class="h2 mb-3">
+                                Groupe : <span class="bold">{{ user.studentGroup.groupName }}</span>
+                            </div>
+                            <div class="h2 mb-3">
+                                Parcours : <span class="bold">{{ user.studentGroup.startAt | date('d/m/Y') }} - {{ (user.studentGroup.startAt) ? user.studentGroup.startAt | date('d/m/Y') : '???'}}</span>
+                            </div>
+                        {% endif %}                        
+                        
+                        <div class="h2 mb-3">
+                            Date de création : <span class="bold">{{ user.createdAt | date('d/m/Y') }}
+                        </div>
+                        <a href=" {{ path('app_update_account', {'id' : user.id})}} " class="btn btn-lg btn-custom my-4">Modifier</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

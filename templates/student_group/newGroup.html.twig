@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <main class="container-fluid p-4">
+        <div class="row justify-content-center">
+            <div class="col-11 col-lg-8 text-center box-highlight my-5">
+                <h2>Code de la classe : <span class="bold">{{ code }}</span></h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-11 col-lg-8 box-custom my-4">
+                {{ form_errors(form) }}
+                {{ form_start(form) }}                    
+                {{ form_end(form) }}  
+            </div>
+        </div>
+    </main>
+{% endblock %}

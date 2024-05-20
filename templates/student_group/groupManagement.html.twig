@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="row justify-content-evenly">
+        {% for group in groups %}
+
+            <div class="col-11 col-lg-5 box-custom p-3 m-5">
+                <p>Nom de la classe : {{ group.groupName }}</p>
+                <p>Code d'inscription  : {{ group.code }}</p>
+                <p>Dates du parcours : {{ group.startAt|date("d/m/Y") }} 
+                    {% if group.endAt %}
+                        - {{ group.endAt|date("d/m/Y")}}
+                    {% endif %}
+                </p>
+                <p>Nombre d'inscrit(s) : {{ group.users|length }}</p>
+            </div>
+            
+        {% endfor %}
+    </div>
+{% endblock %}

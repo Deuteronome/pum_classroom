@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <main class="container-fluid p-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 box-custom">
+                {% for user in users %}
+                    
+                        <div>{{ user.firstname }} {{ user.lastname}} ({{ user.pseudo}})</div>
+                        <div>{{ user.email}}</div>
+                        <div>{{ user.studentGroup.groupName}}</div>
+                        <div>{{ user.createdAt|date('d/m/Y')}}</div>   
+                    
+                
+                {% endfor %}
+            </div>
+    </main>
+{% endblock %}
