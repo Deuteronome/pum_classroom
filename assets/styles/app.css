@@ -297,6 +297,46 @@ main {
     padding : 7px;
 }
 
+.btn-open, .btn-closed {
+    
+    background-size: contain;
+    background-position-x: center;
+    background-repeat: no-repeat;
+}
+
+.btn-open {
+    background-image: url('../images/icons/open.png');
+}
+
+.btn-closed {
+    background-image: url('../images/icons/close.png');
+}
+
+.btn-open:hover {
+    background-image: url('../images/icons/close_h.png');
+    background-color: var(--col-pal2-sec);
+}
+
+.btn-closed:hover {
+    background-image: url('../images/icons/open_h.png');
+    background-color: var(--col-pal2-sec);
+}
+
+/* tableaux */
+
+.array-header {
+    background-color: var(--col-pal2-prim);
+    color: var(--col-pal2-last);
+    font-family: 'customBold', sans-serif;
+    border : var(--col-pal2-last) solid 1px;
+    border-bottom: none;
+}
+
+.array-content {
+    border : var(--col-pal2-prim) solid 1px;
+    border-top: none;
+}
+
 /*éléments spécifiques */
 
     /*Affichage account*/

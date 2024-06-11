@@ -18,6 +18,7 @@ use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -279,19 +280,43 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/enseignant/liste_utilisateurs', name: 'app_user_list')]
+    #[Route('/admin/liste_utilisateurs', name: 'app_user_list')]
+    #[IsGranted('ROLE_ADMIN')]
     public function usersManagement(UserRepository $userRepository):Response
     {
+        
         $usersOn = $userRepository->findAllActives();
         $usersOff = $userRepository->findAllInactives();
 
         $pageInfo = [
             'title' => 'Gestion des utilisateurs'
         ];
+
         return $this->render('user/userManagement.html.twig', [
             'pageInfo' => $pageInfo,
             'users' => $usersOn,
-            'offUsers' => $usersOff,          
+            'offUsers' => $usersOff,        
         ]);
     }
+
+    #[Route('/enseignant/changer_status/{id}', name: 'app_change_status')]
+    #[IsGranted('ROLE_TEACHER')]
+    public function changeUserStatus(User $user, Request $request, EntityManagerInterface $em):Response
+    {
+        $user->setActive(!$user->isActive());
+
+        $em->persist($user);
+
+        try
+        {
+            $em->flush();
+                
+        }catch(Exception $e)
+        {
+            $this->addFlash('danger', 'une erreur s\'est produite (détail : '.$e->getMessage().')');
+        }
+        
+        return $this->redirect($request->headers->get('referer'));
+    }
+
 }

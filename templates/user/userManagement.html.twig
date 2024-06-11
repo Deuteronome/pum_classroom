@@ -4,15 +4,85 @@
     <main class="container-fluid p-5">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8 box-custom">
-                {% for user in users %}
-                    
-                        <div>{{ user.firstname }} {{ user.lastname}} ({{ user.pseudo}})</div>
-                        <div>{{ user.email}}</div>
-                        <div>{{ user.studentGroup.groupName}}</div>
-                        <div>{{ user.createdAt|date('d/m/Y')}}</div>   
-                    
-                
-                {% endfor %}
+                <div class="row justify-content-center">
+                    <h2 class="col-12 title-custom mb-4">Utilisateurs actifs</h2>
+                    <div class="col-3 array-header text-center py-2">Utilisateur</div>
+                    <div class="col-3 array-header text-center py-2">Classe</div>
+                    <div class="col-2 array-header text-center py-2">Rôle</div>
+                    <div class="col-2 array-header text-center py-2">Détail</div>
+                    <div class="col-2 array-header text-center py-2">Désactiver</div>
+                    {% for user in users %}
+                        <div class="col-3 array-content py-3">
+                            {{ user.firstname }} {{ user.lastname}} 
+                            {% if user.pseudo %}
+                                ({{ user.pseudo}})
+                            {% endif %}                            
+                        </div>
+                        <div class="col-3 array-content py-3">
+                            {% if user.studentGroup %}
+                                {{ user.studentGroup.groupName}}
+                            {% else %}
+                                Non défini
+                            {% endif %}
+                        </div>
+                        <div class="col-2 array-content py-3">
+                            {% if user.roles[0] == "ROLE_ADMIN" %}
+                                "Administrateur"
+                            {% elseif user.roles[0] == "ROLE_TEACHER" %}
+                                "Enseignant"
+                            {% else %}
+                                "Apprenant"
+                            {% endif %}
+                        </div>
+                        <div class="col-2 array-content text-center py-1">
+                            <a href="{{ path("app_account", {'id' : user.id})}}" target="_blank" class="btn btn-sm btn-custom px-3">Voir le compte</a>
+                        </div>
+                        <a href="{{ path("app_change_status", {'id' : user.id})}}" class="col-2 array-content text-center py-3 btn-open"></a>
+                                            
+                    {% endfor %}
+                </div>                
             </div>
+
+            <div class="col-12 col-lg-8 mt-4 box-custom">
+                <div class="row justify-content-center">
+                    <h2 class="col-12 title-custom mb-4">Utilisateurs inactifs</h2>
+                    <div class="col-3 array-header text-center py-2">Utilisateur</div>
+                    <div class="col-3 array-header text-center py-2">Classe</div>
+                    <div class="col-2 array-header text-center py-2">Rôle</div>
+                    <div class="col-2 array-header text-center py-2">Détail</div>
+                    <div class="col-2 array-header text-center py-2">Activer</div>
+                    {% for user in offUsers %}
+                        <div class="col-3 array-content py-3">
+                            {{ user.firstname }} {{ user.lastname}} 
+                            {% if user.pseudo %}
+                                ({{ user.pseudo}})
+                            {% endif %}                            
+                        </div>
+                        <div class="col-3 array-content py-3">
+                            {% if user.studentGroup %}
+                                {{ user.studentGroup.groupName}}
+                            {% else %}
+                                Non défini
+                            {% endif %}
+                        </div>
+                        <div class="col-2 array-content py-3">
+                            {% if user.roles[0] == "ROLE_ADMIN" %}
+                                "Administrateur"
+                            {% elseif user.roles[0] == "ROLE_TEACHER" %}
+                                "Enseignant"
+                            {% else %}
+                                "Apprenant"
+                            {% endif %}
+                        </div>
+                        <div class="col-2 array-content text-center py-1">
+                            <a href="{{ path("app_account", {'id' : user.id})}}" target="_blank" class="btn btn-sm btn-custom px-3">Voir le compte</a>
+                        </div>                        
+                        <a href="{{ path("app_change_status", {'id' : user.id})}}" class="col-2 array-content text-center py-3 btn-closed"></a>
+                        
+                                            
+                    {% endfor %}
+                </div>                
+            </div>            
+        </div>
     </main>
 {% endblock %}
